@@ -10,7 +10,7 @@ let requested = false
 let address
 
 function getDefaultProvider() {
-  legacyProvider = new Web3(getNetworkProviderUrl(1))
+  legacyProvider = new Web3(getNetworkProviderUrl(43114))
   return new ethers.getDefaultProvider('homestead', 'any')
 }
 
@@ -24,10 +24,11 @@ function getWeb3Provider(providerOrUrl) {
   return new ethers.providers.Web3Provider(providerOrUrl, 'any')
 }
 
-function getInfuraProvider(infura) {
-  legacyProvider = new Web3(`https://mainnet.infura.io/v3/${infura}`)
-  return new ethers.providers.InfuraProvider('homestead', infura)
+function getMainnetProvider() {
+  legacyProvider = new Web3(`https://api.avax.network/ext/bc/C/rpc`)
+  return new ethers.providers.Web3Provider('https://api.avax.network/ext/bc/C/rpc', 'any')
 }
+
 
 export async function setupWeb3({
   customProvider,
@@ -157,16 +158,14 @@ export function isReadOnly() {
 
 export function getNetworkProviderUrl(id) {
   switch (id) {
-    case '1':
-      return `https://mainnet.infura.io/v3/90f210707d3c450f847659dc9a3436ea`
-    case '3':
-      return `https://ropsten.infura.io/v3/90f210707d3c450f847659dc9a3436ea`
-    case '4':
-      return `https://rinkeby.infura.io/v3/90f210707d3c450f847659dc9a3436ea`
-    case '5':
-      return `https://goerli.infura.io/v3/90f210707d3c450f847659dc9a3436ea`
+    case '43112':
+      return `http://localhost:9650/ext/bc/C/rpc`
+    case '43113':
+      return `https://api.avax-test.network/ext/bc/C/rpc`
+    case '43114':
+      return `https://api.avax.network/ext/bc/C/rpc`
     default:
-      return `https://mainnet.infura.io/v3/90f210707d3c450f847659dc9a3436ea`
+      return `https://api.avax.network/ext/bc/C/rpc`
   }
 }
 

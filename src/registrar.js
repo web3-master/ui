@@ -52,7 +52,7 @@ function checkArguments({
   if (!legacyAuctionRegistrarAddress)
     throw 'No legacy auction address given to Registrar class'
 
-  if (!ethAddress) throw 'No .eth address given to Registrar class'
+  if (!ethAddress) throw 'No .avax address given to Registrar class'
 
   if (!provider) throw 'Provider is required for Registrar'
 
@@ -335,7 +335,7 @@ export default class Registrar {
       signer
     )
     const account = await getAccount()
-    const resolverAddr = await this.getAddress('resolver.eth')
+    const resolverAddr = await this.getAddress('resolver.avax')
     if (parseInt(resolverAddr, 16) === 0) {
       return permanentRegistrarController.makeCommitment(name, owner, secret)
     } else {
@@ -592,7 +592,7 @@ export default class Registrar {
     }else{
       // Only available for the new DNSRegistrar
       if(!isOld && (owner === user)){
-        const resolverAddress = await this.getAddress('resolver.eth')
+        const resolverAddress = await this.getAddress('resolver.avax')
         return registrar.proveAndClaimWithResolver(claim.encodedName, data, proof, resolverAddress, owner);
       }else{
         return registrar.proveAndClaim(claim.encodedName, data, proof)
@@ -630,7 +630,7 @@ export default class Registrar {
 }
 
 async function getEthResolver(ENS) {
-  const resolverAddr = await ENS.resolver(namehash('eth'))
+  const resolverAddr = await ENS.resolver(namehash('avax'))
   const provider = await getProvider()
   return getResolverContract({ address: resolverAddr, provider })
 }
@@ -640,19 +640,19 @@ export async function setupRegistrar(registryAddress) {
   const ENS = getENSContract({ address: registryAddress, provider })
   const Resolver = await getEthResolver(ENS)
 
-  let ethAddress = await ENS.owner(namehash('eth'))
+  let ethAddress = await ENS.owner(namehash('avax'))
 
   let controllerAddress = await Resolver.interfaceImplementer(
-    namehash('eth'),
+    namehash('avax'),
     permanentRegistrarInterfaceId
   )
   let legacyAuctionRegistrarAddress = await Resolver.interfaceImplementer(
-    namehash('eth'),
+    namehash('avax'),
     legacyRegistrarInterfaceId
   )
 
   let bulkRenewalAddress = await Resolver.interfaceImplementer(
-    namehash('eth'),
+    namehash('avax'),
     bulkRenewalInterfaceId
   )
 
