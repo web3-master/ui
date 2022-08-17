@@ -10,7 +10,7 @@ let requested = false
 let address
 
 function getDefaultProvider() {
-  legacyProvider = new Web3(getNetworkProviderUrl(43114))
+  legacyProvider = new Web3(getNetworkProviderUrl(941))
   return new ethers.getDefaultProvider('homestead', 'any')
 }
 
@@ -25,8 +25,8 @@ function getWeb3Provider(providerOrUrl) {
 }
 
 function getMainnetProvider() {
-  legacyProvider = new Web3(`https://api.avax.network/ext/bc/C/rpc`)
-  return new ethers.providers.Web3Provider('https://api.avax.network/ext/bc/C/rpc', 'any')
+  legacyProvider = new Web3(`https://rpc.v2b.testnet.pulsechain.com`)
+  return new ethers.providers.Web3Provider('https://rpc.v2b.testnet.pulsechain.com', 'any')
 }
 
 
@@ -158,14 +158,10 @@ export function isReadOnly() {
 
 export function getNetworkProviderUrl(id) {
   switch (id) {
-    case '43112':
-      return `http://localhost:9650/ext/bc/C/rpc`
-    case '43113':
-      return `https://api.avax-test.network/ext/bc/C/rpc`
-    case '43114':
-      return `https://api.avax.network/ext/bc/C/rpc`
+    case '941':
+      return `https://rpc.v2b.testnet.pulsechain.com`
     default:
-      return `https://api.avax.network/ext/bc/C/rpc`
+      return `https://rpc.v2b.testnet.pulsechain.com`
   }
 }
 

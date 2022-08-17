@@ -54,14 +54,8 @@ function getLabelhash(label) {
 }
 
 const contracts = {
-  43114: {
-    registry: ''
-  },
-  43112: {
-    registry: ''
-  },
-  43113: {
-    registry: '0x1F68692D58bABeDC2549a49a2F73cf05fc078af1'
+  941: {
+    registry: '0xF49233142Fc9c22F475e918c718755e6aA247c04'
   }
 }
 
@@ -513,7 +507,7 @@ export class ENS {
 
   async createSubdomain(name) {
     const account = await getAccount()
-    const publicResolverAddress = await this.getAddress('resolver.avax')
+    const publicResolverAddress = await this.getAddress('resolver.pls')
     try {
       return this.setSubnodeRecord(name, account, publicResolverAddress)
     } catch (e) {

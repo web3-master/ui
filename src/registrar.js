@@ -52,7 +52,7 @@ function checkArguments({
   if (!legacyAuctionRegistrarAddress)
     throw 'No legacy auction address given to Registrar class'
 
-  if (!ethAddress) throw 'No .avax address given to Registrar class'
+  if (!ethAddress) throw 'No .pls address given to Registrar class'
 
   if (!provider) throw 'Provider is required for Registrar'
 
@@ -335,7 +335,7 @@ export default class Registrar {
       signer
     )
     const account = await getAccount()
-    const resolverAddr = await this.getAddress('resolver.avax')
+    const resolverAddr = await this.getAddress('resolver.pls')
     if (parseInt(resolverAddr, 16) === 0) {
       return permanentRegistrarController.makeCommitment(name, owner, secret)
     } else {
@@ -384,7 +384,7 @@ export default class Registrar {
     const account = await getAccount()
     const price = await this.getRentPrice(label, duration)
     const priceWithBuffer = getBufferedPrice(price)
-    const resolverAddr = await this.getAddress('resolver.avax')
+    const resolverAddr = await this.getAddress('resolver.pls')
     if (parseInt(resolverAddr, 16) === 0) {
       const gasLimit = await this.estimateGasLimit(() => {
         return permanentRegistrarController.estimateGas.register(
@@ -592,7 +592,7 @@ export default class Registrar {
     }else{
       // Only available for the new DNSRegistrar
       if(!isOld && (owner === user)){
-        const resolverAddress = await this.getAddress('resolver.avax')
+        const resolverAddress = await this.getAddress('resolver.pls')
         return registrar.proveAndClaimWithResolver(claim.encodedName, data, proof, resolverAddress, owner);
       }else{
         return registrar.proveAndClaim(claim.encodedName, data, proof)
@@ -630,7 +630,7 @@ export default class Registrar {
 }
 
 async function getEthResolver(ENS) {
-  const resolverAddr = await ENS.resolver(namehash('avax'))
+  const resolverAddr = await ENS.resolver(namehash('pls'))
   const provider = await getProvider()
   return getResolverContract({ address: resolverAddr, provider })
 }
@@ -640,19 +640,19 @@ export async function setupRegistrar(registryAddress) {
   const ENS = getENSContract({ address: registryAddress, provider })
   const Resolver = await getEthResolver(ENS)
 
-  let ethAddress = await ENS.owner(namehash('avax'))
+  let ethAddress = await ENS.owner(namehash('pls'))
 
   let controllerAddress = await Resolver.interfaceImplementer(
-    namehash('avax'),
+    namehash('pls'),
     permanentRegistrarInterfaceId
   )
   let legacyAuctionRegistrarAddress = await Resolver.interfaceImplementer(
-    namehash('avax'),
+    namehash('pls'),
     legacyRegistrarInterfaceId
   )
 
   let bulkRenewalAddress = await Resolver.interfaceImplementer(
-    namehash('avax'),
+    namehash('pls'),
     bulkRenewalInterfaceId
   )
 
