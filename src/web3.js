@@ -25,8 +25,8 @@ function getWeb3Provider(providerOrUrl) {
 }
 
 function getMainnetProvider() {
-  legacyProvider = new Web3(`https://rpc.v2b.testnet.pulsechain.com`)
-  return new ethers.providers.Web3Provider('https://rpc.v2b.testnet.pulsechain.com', 'any')
+  legacyProvider = new Web3(`https://rpc.mainnet.pulsechain.com`)
+  return new ethers.providers.Web3Provider('https://rpc.mainnet.pulsechain.com', 'any')
 }
 
 
@@ -160,8 +160,10 @@ export function getNetworkProviderUrl(id) {
   switch (id) {
     case '941':
       return `https://rpc.v2b.testnet.pulsechain.com`
+    case '369':
+      return `https://rpc.mainnet.pulsechain.com`
     default:
-      return `https://rpc.v2b.testnet.pulsechain.com`
+      return `https://rpc.mainnet.pulsechain.com`
   }
 }
 
