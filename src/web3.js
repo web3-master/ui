@@ -10,8 +10,9 @@ let requested = false
 let address
 
 function getDefaultProvider() {
-  legacyProvider = new Web3(getNetworkProviderUrl(941))
-  return new ethers.getDefaultProvider('homestead', 'any')
+  const providerUrl = getNetworkProviderUrl('941')
+  legacyProvider = new Web3(providerUrl)
+  return new ethers.getDefaultProvider(providerUrl, 'any')
 }
 
 function getJsonRpcProvider(providerOrUrl) {
@@ -20,8 +21,8 @@ function getJsonRpcProvider(providerOrUrl) {
 }
 
 function getWeb3Provider(providerOrUrl) {
-  legacyProvider = new Web3(providerOrUrl)
-  return new ethers.providers.Web3Provider(providerOrUrl, 'any')
+  legacyProvider = new Web3(providerOrUrl) 
+  return new ethers.providers.Web3Provider(providerOrUrl, 'any') 
 }
 
 function getMainnetProvider() {
