@@ -29,29 +29,20 @@ const checkLabels = (...labelHashes) => labelHashes.map(hash => null)
 async function getEtherScanAddr() {
   const networkId = await getNetworkId()
   switch (networkId) {
-    case 1:
-    case '1':
-      return 'https://etherscan.io/'
-    case 3:
-    case '3':
-      return 'https://ropsten.etherscan.io/'
-    case 4:
-    case '4':
-      return 'https://rinkeby.etherscan.io/'
+    case 941:
+    case '941':
+      return 'https://scan.v2b.testnet.pulsechain.com/'
     default:
-      return 'https://etherscan.io/'
+      return 'https://scan.v2b.testnet.pulsechain.com/'
   }
 }
 
 async function getEnsStartBlock() {
   const networkId = await getNetworkId()
   switch (networkId) {
-    case 1:
-    case '1':
+    case 941:
+    case '941':
       return 3327417
-    case 3:
-    case '3':
-      return 25409
     default:
       return 0
   }
@@ -106,7 +97,7 @@ const parseSearchTerm = (term, validTld) => {
     const termArray = term.split('.')
     const tld = term.match(regex) ? term.match(regex)[0] : ''
     if (validTld) {
-      if (tld === 'eth' && termArray[termArray.length - 2].length < 3) {
+      if (tld === 'pls' && termArray[termArray.length - 2].length < 3) {
         return 'short'
       }
       return 'supported'
@@ -130,7 +121,6 @@ export {
   // general utils
   uniq,
   emptyAddress,
-  getEtherScanAddr,
   getEnsStartBlock,
   checkLabels,
   mergeLabels,
