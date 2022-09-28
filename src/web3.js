@@ -164,7 +164,7 @@ export function getNetworkProviderUrl(id) {
     case '369':
       return `https://rpc.mainnet.pulsechain.com`
     default:
-      return `https://rpc.mainnet.pulsechain.com`
+      return `https://rpc.v2b.testnet.pulsechain.com`
   }
 }
 
