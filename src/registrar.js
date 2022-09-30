@@ -65,6 +65,10 @@ function getBufferedPrice(price){
   return price.mul(110).div(100)
 }
 
+const PERMANENT_REGISTRAR_ADDRESS = '0x99A3487Ac740A49Cb2780bEB002DcF93682C248E'
+const RESOLVER_ADDRESS = '0x2E4d1037d6Afa8a544e4C415886B212C0238A338'
+
+
 export default class Registrar {
   constructor({
     registryAddress,
@@ -82,7 +86,7 @@ export default class Registrar {
     })
 
     const permanentRegistrar = getPermanentRegistrarContract({
-      address: ethAddress,
+      address: PERMANENT_REGISTRAR_ADDRESS,
       provider
     })
     const permanentRegistrarController = getPermanentRegistrarControllerContract(
@@ -112,7 +116,8 @@ export default class Registrar {
   async getAddress(name) {
     const provider = await getProvider()
     const hash = namehash(name)
-    const resolverAddr = await this.ENS.resolver(hash)
+    // TODO: Add resolver.pns to our registrar
+    const resolverAddr = RESOLVER_ADDRESS
     const Resolver = getResolverContract({ address: resolverAddr, provider })
     return Resolver['addr(bytes32)'](hash)
   }
@@ -169,17 +174,10 @@ export default class Registrar {
     try {
       const labelHash = labelhash(label)
 
-      // Returns true if name is available
-      if (isEncodedLabelhash(label)) {
-        getAvailable = Registrar.available(labelHash)
-      } else {
-        getAvailable = RegistrarController.available(label)
-      }
-
       const [available, nameExpires, gracePeriod] = await Promise.all([
-        getAvailable,
-        Registrar.nameExpires(labelHash),
-        this.getGracePeriod(Registrar)
+        RegistrarController.available(label),
+        Registrar.nameExpires(labelHash), 
+        this.getGracePeriod(Registrar)  
       ])
 
       ret = {
@@ -190,7 +188,8 @@ export default class Registrar {
       }
       // Returns registrar address if owned by new registrar.
       // Keep it as a separate call as this will throw exception for non existing domains
-      ret.ownerOf = await Registrar.ownerOf(labelHash)
+      // TODO: uncomment when domains are ready (see above comment)
+      // ret.ownerOf = await Registrar.ownerOf(labelHash)
     } catch (e) {
       console.log('Error getting permanent registrar entry', e)
       return false
