@@ -116,8 +116,7 @@ export default class Registrar {
   async getAddress(name) {
     const provider = await getProvider()
     const hash = namehash(name)
-    // TODO: Add resolver.pns to our registrar
-    const resolverAddr = RESOLVER_ADDRESS
+    const resolverAddr = await this.ENS.resolver(hash)
     const Resolver = getResolverContract({ address: resolverAddr, provider })
     return Resolver['addr(bytes32)'](hash)
   }
@@ -188,7 +187,7 @@ export default class Registrar {
       }
       // Returns registrar address if owned by new registrar.
       // Keep it as a separate call as this will throw exception for non existing domains
-      // TODO: uncomment when domains are ready (see above comment)
+      // TODO: uncomment when domains are ready (see above)
       // ret.ownerOf = await Registrar.ownerOf(labelHash)
     } catch (e) {
       console.log('Error getting permanent registrar entry', e)
@@ -334,7 +333,9 @@ export default class Registrar {
       signer
     )
     const account = await getAccount()
-    const resolverAddr = await this.getAddress('resolver.pls')
+    // TODO: Add resolver.pns to our registrar
+    // const resolverAddr = await this.getAddress('resolver.pls')
+    const resolverAddr = RESOLVER_ADDRESS
     if (parseInt(resolverAddr, 16) === 0) {
       return permanentRegistrarController.makeCommitment(name, owner, secret)
     } else {
@@ -383,7 +384,9 @@ export default class Registrar {
     const account = await getAccount()
     const price = await this.getRentPrice(label, duration)
     const priceWithBuffer = getBufferedPrice(price)
-    const resolverAddr = await this.getAddress('resolver.pls')
+    // TODO: Add resolver.pns to our registrar
+    // const resolverAddr = await this.getAddress('resolver.pls')
+    const resolverAddr = RESOLVER_ADDRESS
     if (parseInt(resolverAddr, 16) === 0) {
       const gasLimit = await this.estimateGasLimit(() => {
         return permanentRegistrarController.estimateGas.register(
@@ -591,7 +594,9 @@ export default class Registrar {
     }else{
       // Only available for the new DNSRegistrar
       if(!isOld && (owner === user)){
-        const resolverAddress = await this.getAddress('resolver.pls')
+        // TODO: Add resolver.pns to our registrar
+        // const resolverAddress = await this.getAddress('resolver.pls')
+        const resolverAddress = RESOLVER_ADDRESS
         return registrar.proveAndClaimWithResolver(claim.encodedName, data, proof, resolverAddress, owner);
       }else{
         return registrar.proveAndClaim(claim.encodedName, data, proof)
