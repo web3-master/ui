@@ -10,6 +10,7 @@ export async function setupENS({
   enforceReadOnly,
   enforceReload,
 } = {}) {
+  debugger
   const { provider } = await setupWeb3({
     customProvider,
     reloadOnAccountsChange,

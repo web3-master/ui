@@ -1,5 +1,6 @@
 import { IFrameEthereumProvider } from '@ethvault/iframe-provider'
 import { ethers } from 'ethers'
+import Web3 from 'web3'
 
 let provider
 let signer
