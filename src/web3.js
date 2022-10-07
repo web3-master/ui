@@ -1,9 +1,7 @@
-import { ethers } from 'ethers'
-import Web3 from 'web3'
 import { IFrameEthereumProvider } from '@ethvault/iframe-provider'
+import { ethers } from 'ethers'
 
 let provider
-let legacyProvider
 let signer
 let readOnly = false
 let requested = false
@@ -36,32 +34,41 @@ export async function setupWeb3({
   reloadOnAccountsChange = false,
   enforceReadOnly = false,
   enforceReload = false,
-  infura = false
+  ensAddress
 }) {
-  if(enforceReload){
+  if (!customProvider) {
+    throw new Error('Provider required to setup web3')
+  }
+
+  if (enforceReload) {
     provider = null
     readOnly = false
     address = null
   }
 
-  if(enforceReadOnly){
+  if (enforceReadOnly) {
     readOnly = true
     address = null
-    if(infura){
-      provider = getInfuraProvider(infura)
-    }else{
-      provider = getDefaultProvider()
-    }
-    return { provider, signer:undefined }
+    provider = getJsonRpcProvider(customProvider)
+    return { provider, signer: undefined }
   }
 
   if (provider) {
     return { provider, signer }
   }
+
   if (customProvider) {
     if (typeof customProvider === 'string') {
       // handle raw RPC endpoint URL
-      provider = getJsonRpcProvider(customProvider)
+      if (customProvider.match(/localhost/) && ensAddress) {
+        provider = getJsonRpcProvider(customProvider, {
+          chainId: 1337,
+          name: 'unknown',
+          ensAddress
+        })
+      } else {
+        provider = getJsonRpcProvider(customProvider)
+      }
       signer = provider.getSigner()
     } else {
       // handle EIP 1193 provider
@@ -124,12 +131,9 @@ export async function setupWeb3({
         // the endpoint is active
         console.log('Success')
       } else {
-        console.log(
+        throw new Error(
           'No web3 instance injected. Falling back to cloud provider.'
         )
-        readOnly = true
-        provider = getDefaultProvider()
-        return { provider, signer }
       }
     }
   }
@@ -255,9 +259,4 @@ export async function getBlock(number = 'latest') {
       timestamp: 0
     }
   }
-}
-
-// This provider is used to pass to dnsprovejs which only supports web3js provider
-export function getLegacyProvider(){
-  return legacyProvider
 }
