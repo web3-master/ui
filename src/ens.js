@@ -44,7 +44,7 @@ const contracts = {
     registry: ''
   },
   941: {
-    registry: '0x224248B45381Fa0Fab9edD89858c4c60A4B44014'
+    registry: '0xf4351A1D5Ee468ad77707A1cFD11E1D798e93ec5'
   }
 }
 
