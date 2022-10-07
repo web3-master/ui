@@ -7,6 +7,11 @@ let readOnly = false
 let requested = false
 let address
 
+function getDefaultProvider() {
+  const providerUrl = getNetworkProviderUrl('941')
+  return new ethers.getDefaultProvider(providerUrl, 'any')
+}
+
 function getJsonRpcProvider(providerOrUrl) {
   return new ethers.providers.JsonRpcProvider(providerOrUrl, 'any')
 }
@@ -14,6 +19,11 @@ function getJsonRpcProvider(providerOrUrl) {
 function getWeb3Provider(providerOrUrl) {
   return new ethers.providers.Web3Provider(providerOrUrl, 'any') 
 }
+
+function getMainnetProvider() {
+  return new ethers.providers.Web3Provider('https://rpc.mainnet.pulsechain.com', 'any')
+}
+
 
 export async function setupWeb3({
   customProvider,
