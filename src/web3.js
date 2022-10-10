@@ -1,6 +1,5 @@
 import { IFrameEthereumProvider } from '@ethvault/iframe-provider'
 import { ethers } from 'ethers'
-import Web3 from 'web3'
 
 let provider
 let signer
@@ -10,22 +9,18 @@ let address
 
 function getDefaultProvider() {
   const providerUrl = getNetworkProviderUrl('941')
-  legacyProvider = new Web3(providerUrl)
   return new ethers.getDefaultProvider(providerUrl, 'any')
 }
 
 function getJsonRpcProvider(providerOrUrl) {
-  legacyProvider = new Web3(providerOrUrl)
   return new ethers.providers.JsonRpcProvider(providerOrUrl, 'any')
 }
 
 function getWeb3Provider(providerOrUrl) {
-  legacyProvider = new Web3(providerOrUrl) 
   return new ethers.providers.Web3Provider(providerOrUrl, 'any') 
 }
 
 function getMainnetProvider() {
-  legacyProvider = new Web3(`https://rpc.mainnet.pulsechain.com`)
   return new ethers.providers.Web3Provider('https://rpc.mainnet.pulsechain.com', 'any')
 }
 
