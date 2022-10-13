@@ -72,7 +72,7 @@ describe('Blockchain tests', () => {
     })
 
     test('ens registry, resolver and reverse registrar deployed', async () => {
-      const eth = getNamehash('eth')
+      const eth = getNamehash('pls')
       const ensContract = ens.getENSContractInstance()
       const ethOwner = await ensContract.owner(eth)
       expect(ethOwner).toBe(baseRegistrar)
@@ -227,7 +227,7 @@ describe('Blockchain tests', () => {
     })
 
     test('getAddr returns an eth address', async () => {
-      const addr = await ens.getAddress('resolver.eth', 'ETH')
+      const addr = await ens.getAddress('resolver.eth', 'pls')
       expect(addr).toBeHex()
       expect(addr).toBeEthAddress()
       expect(addr).not.toBe('0x0000000000000000000000000000000000000000')
@@ -254,11 +254,11 @@ describe('Blockchain tests', () => {
       await tx.wait()
       const tx2 = await ens.setAddr(
         'superawesome.eth',
-        'ETH',
+        'pls',
         '0x0000000000000000000000000000000000012345'
       )
       await tx2.wait()
-      const addr = await ens.getAddr('superawesome.eth', 'ETH')
+      const addr = await ens.getAddr('superawesome.eth', 'pls')
       expect(addr).toBe('0x0000000000000000000000000000000000012345')
     })
 
@@ -318,7 +318,7 @@ describe('Blockchain tests', () => {
     test('getName gets a name for an address', async () => {
       const accounts = await getAccounts()
       const { name } = await ens.getName(accounts[2])
-      expect(name).toBe('eth')
+      expect(name).toBe('pls')
     })
 
     test('claimAndSetReverseRecordName claims and sets a name', async () => {
@@ -353,7 +353,7 @@ describe('Blockchain tests', () => {
     })
 
     test('getSubdomains gets all subdomains', async () => {
-      const domains = await ens.getSubdomains('eth')
+      const domains = await ens.getSubdomains('pls')
       expect(domains.length).toBeGreaterThan(0)
       expect(domains[0].labelhash).toMatchSnapshot()
     })

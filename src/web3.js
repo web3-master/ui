@@ -45,7 +45,7 @@ export async function setupWeb3({
   if (enforceReadOnly) {
     readOnly = true
     address = null
-    provider = getJsonRpcProvider(customProvider)
+    provider = getDefaultProvider()
     return { provider, signer: undefined }
   }
 
@@ -127,9 +127,12 @@ export async function setupWeb3({
         // the endpoint is active
         console.log('Success')
       } else {
-        throw new Error(
+        console.log(
           'No web3 instance injected. Falling back to cloud provider.'
         )
+        readOnly = true
+        provider = getDefaultProvider()
+        return { provider, signer }
       }
     }
   }
