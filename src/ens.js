@@ -23,6 +23,7 @@ import {
   getWeb3
 } from './web3'
 import { interfaces } from './constants/interfaces'
+import { REGISTRY_ADDRESS, RESOLVER_ADDRESS } from './constants/addresses'
 
 /* Utils */
 
@@ -44,7 +45,7 @@ const contracts = {
     registry: ''
   },
   941: {
-    registry: '0xf4351A1D5Ee468ad77707A1cFD11E1D798e93ec5'
+    registry: REGISTRY_ADDRESS
   }
 }
 
@@ -113,7 +114,8 @@ export class ENS {
   }
 
   async getAddress(name) {
-    return this.getAddr(name, 'ETH')
+    if (name === 'resolver.pls') return RESOLVER_ADDRESS
+    return this.getAddr(name, 'PLS')
   }
 
   async getAddr(name, key) {
