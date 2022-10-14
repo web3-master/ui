@@ -112,16 +112,16 @@ export default class Registrar {
     if (name === 'resolver.pls') return RESOLVER_ADDRESS
     const provider = await getProvider()
     const hash = namehash(name)
-    const resolverAddr = await this.ENS.resolver(hash)
-    const Resolver = getResolverContract({ address: resolverAddr, provider })
+    // const resolverAddr = await this.ENS.resolver(hash)
+    const Resolver = getResolverContract({ address: RESOLVER_ADDRESS, provider })
     return Resolver['addr(bytes32)'](hash)
   }
 
   async getText(name, key) {
     const provider = await getProvider()
     const hash = namehash(name)
-    const resolverAddr = await this.ENS.resolver(hash)
-    const Resolver = getResolverContract({ address: resolverAddr, provider })
+    // const resolverAddr = await this.ENS.resolver(hash)
+    const Resolver = getResolverContract({ address: RESOLVER_ADDRESS, provider })
     return Resolver.text(hash, key)
   }
 
@@ -697,7 +697,7 @@ export default class Registrar {
 async function getEthResolver(ENS) {
   const resolverAddr = await ENS.resolver(namehash('pls'))
   const provider = await getProvider()
-  return getResolverContract({ address: resolverAddr, provider })
+  return getResolverContract({ address: RESOLVER_ADDRESS, provider })
 }
 
 export async function setupRegistrar(registryAddress) {
