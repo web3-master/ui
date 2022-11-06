@@ -12,18 +12,20 @@ function getDefaultProvider() {
   return new ethers.getDefaultProvider(providerUrl, 'any')
 }
 
-function getJsonRpcProvider(providerOrUrl) {
-  return new ethers.providers.JsonRpcProvider(providerOrUrl, 'any')
+function getJsonRpcProvider(providerOrUrl, option = 'any') {
+  return new ethers.providers.JsonRpcProvider(providerOrUrl, option)
 }
 
-function getWeb3Provider(providerOrUrl) {
-  return new ethers.providers.Web3Provider(providerOrUrl, 'any') 
+function getWeb3Provider(providerOrUrl, option = 'any') {
+  return new ethers.providers.Web3Provider(providerOrUrl, option)
 }
 
 function getMainnetProvider() {
-  return new ethers.providers.Web3Provider('https://rpc.mainnet.pulsechain.com', 'any')
+  return new ethers.providers.Web3Provider(
+    'https://rpc.mainnet.pulsechain.com',
+    'any'
+  )
 }
-
 
 export async function setupWeb3({
   customProvider,
