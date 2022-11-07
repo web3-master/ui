@@ -1,5 +1,8 @@
 import { utils } from 'ethers'
-import { PERMANENT_REGISTRAR_ADDRESS, RESOLVER_ADDRESS } from './constants/addresses'
+import {
+  PERMANENT_REGISTRAR_ADDRESS,
+  RESOLVER_ADDRESS
+} from './constants/addresses'
 import { interfaces } from './constants/interfaces'
 import {
   getBulkRenewalContract,
@@ -61,7 +64,6 @@ function getBufferedPrice(price) {
   return price.mul(110).div(100)
 }
 
-
 export default class Registrar {
   constructor({
     registryAddress,
@@ -113,7 +115,10 @@ export default class Registrar {
     const provider = await getProvider()
     const hash = namehash(name)
     // const resolverAddr = await this.ENS.resolver(hash)
-    const Resolver = getResolverContract({ address: RESOLVER_ADDRESS, provider })
+    const Resolver = getResolverContract({
+      address: RESOLVER_ADDRESS,
+      provider
+    })
     return Resolver['addr(bytes32)'](hash)
   }
 
@@ -121,7 +126,10 @@ export default class Registrar {
     const provider = await getProvider()
     const hash = namehash(name)
     // const resolverAddr = await this.ENS.resolver(hash)
-    const Resolver = getResolverContract({ address: RESOLVER_ADDRESS, provider })
+    const Resolver = getResolverContract({
+      address: RESOLVER_ADDRESS,
+      provider
+    })
     return Resolver.text(hash, key)
   }
 
@@ -184,8 +192,8 @@ export default class Registrar {
 
       const [available, nameExpires, gracePeriod] = await Promise.all([
         RegistrarController.available(label),
-        Registrar.nameExpires(labelHash), 
-        this.getGracePeriod(Registrar)  
+        Registrar.nameExpires(labelHash),
+        this.getGracePeriod(Registrar)
       ])
 
       ret = {
@@ -317,23 +325,31 @@ export default class Registrar {
     return price
   }
 
-  async getRentPriceAndPremium(name, duration, block="latest") {
+  async getRentPriceAndPremium(name, duration, block = 'latest') {
     const permanentRegistrarController = this.permanentRegistrarController
-    let price = await permanentRegistrarController.rentPrice(name, duration, {blockTag:block} )
-    let premium = await permanentRegistrarController.rentPrice(name, 0, {blockTag:block} )
+    let price = await permanentRegistrarController.rentPrice(name, duration, {
+      blockTag: block
+    })
+    let premium = await permanentRegistrarController.rentPrice(name, 0, {
+      blockTag: block
+    })
     return {
-      price, premium
+      price,
+      premium
     }
   }
 
   async getEthPrice() {
     const oracleens = 'eth-usd.data.eth'
-    try{
+    try {
       const contractAddress = await this.getAddress(oracleens)
       const oracle = await this.getOracle(contractAddress)
       return (await oracle.latestAnswer()).toNumber() / 100000000
-    }catch(e){
-      console.warn(`Either ${oracleens} does not exist or Oracle is not throwing an error`, e)
+    } catch (e) {
+      console.warn(
+        `Either ${oracleens} does not exist or Oracle is not throwing an error`,
+        e
+      )
     }
   }
 
@@ -465,7 +481,7 @@ export default class Registrar {
   }
 
   async estimateGasLimit(cb) {
-    let gas = 0
+    let gas = 60000
     try {
       gas = (await cb()).toNumber()
     } catch (e) {
@@ -651,7 +667,7 @@ export default class Registrar {
       // Only available for the new DNSRegistrar
       if (!isOld && owner === user) {
         const resolverAddress = await this.getAddress('resolver.pls')
-        
+
         return registrar.proveAndClaimWithResolver(
           claim.encodedName,
           data,
@@ -697,7 +713,7 @@ export default class Registrar {
 async function getEthResolver(ENS) {
   const resolverAddr = await ENS.resolver(namehash('pls'))
   const provider = await getProvider()
-  return getResolverContract({ address: RESOLVER_ADDRESS, provider })
+  return getResolverContract({ address: resolverAddr, provider })
 }
 
 export async function setupRegistrar(registryAddress) {

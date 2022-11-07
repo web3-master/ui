@@ -164,6 +164,8 @@ export function isReadOnly() {
 
 export function getNetworkProviderUrl(id) {
   switch (id) {
+    case '1337':
+      return 'http://localhost:8545'
     case '941':
       return `https://rpc.v2b.testnet.pulsechain.com`
     case '369':
