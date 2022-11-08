@@ -70,7 +70,15 @@ export async function setupWeb3({
       signer = provider.getSigner()
     } else {
       // handle EIP 1193 provider
-      provider = getWeb3Provider(customProvider)
+      if (ensAddress) {
+        provider = getWeb3Provider(customProvider, {
+          chainId: 941,
+          name: 'Pulsechain testnet',
+          ensAddress
+        })
+      } else {
+        provider = getWeb3Provider(customProvider)
+      }
     }
     return { provider, signer }
   }
